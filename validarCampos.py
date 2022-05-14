@@ -1,6 +1,4 @@
-
 import dicionario
-
 
 def camposSelect(txt):
     campos = txt.split("from")[0]

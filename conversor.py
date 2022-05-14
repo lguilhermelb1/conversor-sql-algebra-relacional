@@ -1,14 +1,5 @@
 from validarCampos import camposJoin, camposSelect, tabelaFrom, tabelasJoin, camposWhere, validar
 
-
-txt = "Select idusuario, nome, datanascimento, descricao, saldoinicial, UF, Descrição from usuario join contas on usuario.idUsuario = contas.Usuario_idUsuario join tipoconta on tipoconta.idTipoConta = contas.TipoConta_idTipoConta where saldoinicial < 3000 and uf = 'ce' and Descrição <> 'Conta Corrente' and idusuario > 3"
-txt2 = "Select nome, datanascimento, descricao, saldoinicial from usuario join contas on usuario.idUsuario = contas.Usuario_idUsuario where saldoinicial >= 235 and uf = ce and cep <> 62930000"
-txt = txt.lower()
-txt2 = txt2.lower()
-
-if validar(txt):
-    print("Válido\n")
-
 def conversorSelect(txt):
     campos = camposSelect(txt)
     select = ""
@@ -69,7 +60,3 @@ def conversorCamposWhere(txt):
     
     #Retorna o auxiliar preenchido e tratado
     return "σ " + campoWhere
-
-print(conversorSelect(txt))
-print("\n")
-print(conversorJoinCampos(txt))
