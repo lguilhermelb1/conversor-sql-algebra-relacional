@@ -49,13 +49,12 @@ def camposJoin(txt):
 
 def camposWhere(txt):
     
- 
     camposAux = []
     if txt.__contains__("where"):
         campos = txt.split("where")[1].split(" ")
         for i in range(len(campos)):
             if checkOperators(campos[i]):
-                aux = 1;
+                aux = 1
                 while campos[i-aux] == '':
                     aux = aux + 1
                 camposAux.append(campos[i-aux])
@@ -107,8 +106,6 @@ def validar(txt):
         if contains(tabelasBanco, i) == False:
             print("Campos do SQL não batem com as do banco: "+ i)
             return False
-    
-    
 
     return True
     
