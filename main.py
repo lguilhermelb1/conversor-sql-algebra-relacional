@@ -10,4 +10,3 @@ sql_valido = validarFormatoSQL.validar_sql(txt)
 campos_valido  = validarCampos.validar(txt)
 if sql_valido and campos_valido:
     print(conversor.priest(txt))
-
