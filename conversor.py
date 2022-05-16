@@ -1,62 +1,43 @@
-from validarCampos import camposJoin, camposSelect, tabelaFrom, tabelasJoin, camposWhere, validar
+from validarCampos import camposJoin, camposSelect, tabelaFrom, tabelasJoin, camposWhere
+from validarFormatoSQL import validar_sql
+import re
 
-def conversorSelect(txt):
-    campos = camposSelect(txt)
-    select = ""
-    
-    for i in range(len(campos)):
-        if i == len(campos)-1:
-            select += str(campos[i]) + " "
-        else:
-            select += str(campos[i]) + ", "
-    
-    #Retorna tudo
-    return "π " + select + conversorCamposWhere(txt) + conversorFrom(txt) + conversorJoinTabelas(txt)
 
-def conversorFrom(txt):
-    tabela = tabelaFrom(txt)
-    tabelaaFrom = str(tabela)
-    
-    return "(" + tabelaaFrom
+# Converte tudo
+def priest(txt):
+    return converter_select(txt) + " " + converter_where(txt) + " " + converter_from(txt)
 
-def conversorJoinTabelas(txt):
-    tabelas = tabelasJoin(txt)
-    tabelaJoin = ""
 
-    for i in range(len(tabelas)):
-        #Se for ultimo da lista tabelas adiciona o )
-        if i == len(tabelas)-1:
-            tabelaJoin += str(tabelas[i]) + ")"
-        #Se não for adiciona o |x|
-        else:
-            tabelaJoin += str(tabelas[i]) + " |x| "
+def converter_select(txt):
+    return "π " + validar_sql(txt).get('campos').get('select')
 
-    return " |x| " + tabelaJoin
+def converter_join(txt):
+    tabelas = []
+    tabJoin = tabelasJoin(txt)
+    campos = campos_join(txt)
+    for i in range(len(tabJoin)):
+        if i == 0:
+            tabelas.append(tabelaFrom(txt))
+        tabelas.append(tabJoin[i])
 
-def conversorJoinCampos(txt):
-    campos = camposJoin(txt)
-    campoJoin = ""
+    aux = "("
+    for i in range(len(tabelas) - 1):
+        aux = f"{aux} {tabelas[i]} |x| {campos[i]}"
+    aux = f'{aux} {tabelas[len(tabelas) - 1]} )'
 
-    for i in range(len(campos)):
-        campoJoin += str(campos[i]) + " "
-    
-    return campoJoin
+    return aux
 
-def conversorCamposWhere(txt):
-    #Adiciona os campos a variavel
-    campos = camposWhere(txt)
-    #Auxiliar para adicionar o texto
-    campoWhere = ""
+def campos_join(txt):
+    string_from = validar_sql(txt).get('campos').get('from')
+    campos = re.findall(r'\w+\.\w+\s*=\s*\w+\.\w+', string_from)
+    return campos
 
-    #Percorre os campos
-    for i in range(len(campos)):
-        #Adiciona ao auxiliar e trata
-        #Se for ultimo da lista campos adiciona espaço
-        if i == len(campos)-1:
-            campoWhere += str(campos[i]) + " "
-        #Se não for adiciona a vírgula
-        else:
-            campoWhere += str(campos[i]) + " AND "
-    
-    #Retorna o auxiliar preenchido e tratado
-    return "σ " + campoWhere
+
+def converter_from(txt):
+    if txt.__contains__('join'):
+        return converter_join(txt)
+    else:
+        return tabelaFrom(txt)
+
+def converter_where(txt):
+    return "σ " + validar_sql(txt).get('campos').get('where')
