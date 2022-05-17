@@ -11,5 +11,5 @@ txt2 = txt2.lower()
 sql_valido = validarFormatoSQL.validar_sql(txt2)
 campos_valido  = validarCampos.validar(txt2)
 if sql_valido and campos_valido:
-    print(conversor.priest(txt))
+    print(conversor.priest(txt).get('string'))
     arvore_inicial(txt)
