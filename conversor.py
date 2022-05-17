@@ -19,7 +19,6 @@ def converter_join(txt):
     tabelas = []
     tabJoin = tabelasJoin(txt)
     campos = campos_join(txt)
-
     for i in range(len(tabJoin)):
         if i == 0:
             tabelas.append(tabelaFrom(txt))
